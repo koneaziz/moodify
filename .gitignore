@@ -1,0 +1,25 @@
+# Frontend
+node_modules/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Local configuration and generated data
+.env
+.env.*
+!.env.example
+data/processed/*
+!data/processed/.gitkeep
+
+# Notebook and OS files
+.ipynb_checkpoints/
+.DS_Store
