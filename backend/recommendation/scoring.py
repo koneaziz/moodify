@@ -8,6 +8,8 @@ Tout est expliqué dans notebooks/03_recommandation_api.ipynb.
 import numpy as np
 import pandas as pd
 
+from backend.personalization import construire_profil_utilisateur
+
 #poids des critères : 70 % sémantique (description + humeur + contexte), 30 % préférences cochées
 POIDS = {
     "description": 0.30,
@@ -21,6 +23,9 @@ POIDS = {
 #calibration donnée par la partie 3 (notebook 02, section 7.3) : 5e et 99,5e centile du score sémantique
 COS_LOW = 0.29
 COS_HIGH = 0.53
+
+#partie 6 : multiplicateur du score d'un morceau chanté quand l'utilisateur demande de l'instrumental
+PENALITE_CHANTE = 0.6
 
 #seuils d'interprétation du score final (étape 5 de l'exemple du sujet)
 SEUILS = [(0.65, "Très forte correspondance"), (0.45, "Bonne correspondance"), (0.0, "Correspondance partielle")]
@@ -47,28 +52,10 @@ def normaliser(scores):
 
 
 def construire_profil(sm, requete):
-    """requete = {"textes": [...], "humeur": [...], "contexte": [...], "genres": [...],
-    "artistes": [...], "energie": int ou None}
-    Le profil complet (humeur, contexte) est la partie 6 : en attendant on utilise
-    directement les affinités par bloc de la partie 3."""
-    humeur = [t for t in requete.get("humeur", []) if t]
-    contexte = [t for t in requete.get("contexte", []) if t]
-    textes = [t for t in requete.get("textes", []) if t] or humeur
-
-    profil = {
-        "textes": textes,
-        "genres": requete.get("genres") or [],
-        "artistes": [a.lower() for a in requete.get("artistes") or []],
-        "energie": requete.get("energie"),
-        "humeur_brut": sm.mood_affinity(humeur or textes),
-        "contexte_brut": sm.context_affinity(contexte) if contexte else {},
-    }
-    profil["blocs_humeur"] = normaliser(profil["humeur_brut"])
-    profil["blocs_contexte"] = normaliser(profil["contexte_brut"])
-    profil["humeur_dominante"] = max(profil["blocs_humeur"], key=profil["blocs_humeur"].get)
-    profil["contexte_dominant"] = (max(profil["blocs_contexte"], key=profil["blocs_contexte"].get)
-                                   if profil["blocs_contexte"] else None)
-    return profil
+    """Profil utilisateur de la partie 6 (backend/personalization).
+    requete = le questionnaire du front, ou l'ancien format {"textes", "humeur", "contexte",
+    "genres", "artistes", "energie"} (toujours accepté, par exemple dans le notebook 03)."""
+    return construire_profil_utilisateur(sm, requete)
 
 
 def moyenne_blocs(blocs_morceau, profil_blocs):
@@ -101,4 +88,12 @@ def calculer_scores(sm, profil):
     #formule du sujet : score = somme(Wi * Si) / somme(Wi)
     poids = {c: POIDS[c] for c in S.columns}
     score = sum(S[c] * poids[c] for c in S.columns) / sum(poids.values())
+
+    #contraintes du profil (partie 6) : genres refusés exclus, morceaux chantés pénalisés si
+    #l'utilisateur veut de l'instrumental
+    if profil.get("genres_exclus"):
+        score = score.where(~df["genre"].isin(profil["genres_exclus"]), 0.0)
+    if profil.get("instrumental"):
+        instru = (df["language"].fillna("") == "instrumental") | (df["instrumentalness"].fillna(0) >= 0.5)
+        score = score.where(instru, score * PENALITE_CHANTE)
     return S, poids, score, brut

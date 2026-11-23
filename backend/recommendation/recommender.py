@@ -79,5 +79,5 @@ def recommander(sm, requete, top_k=3):
     if profil["genres"]:
         synthese += ", genres : " + ", ".join(profil["genres"])
 
-    return {"profil": {**profil, "synthese": synthese + "."}, "recommandations": resultats, "poids": poids,
+    return {"profil": {**profil, "synthese": profil.get("synthese") or synthese + "."}, "recommandations": resultats, "poids": poids,
             "scores": score, "criteres": S}

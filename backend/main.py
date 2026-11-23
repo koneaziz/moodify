@@ -29,25 +29,6 @@ app = FastAPI(title="Moodify API")
 #sinon le navigateur bloque les appels du front (localhost:3000) vers l'API (localhost:8000)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
-#le front a ses propres listes (frontend/types/questionnaire.ts), on les traduit vers le dataset
-GENRES_FRONT = {
-    "Pop": ["Pop"], "Hip-Hop": ["Hip-hop / Rap"], "R&B": ["R&B / Soul / Funk"], "Soul": ["R&B / Soul / Funk"],
-    "Rock": ["Rock"], "Jazz": ["Jazz / Blues"], "Classical": ["Classique"], "Electronic": ["Électro / House"],
-    "Lo-Fi": ["Lo-fi / Chill"], "Indie": ["Indie / Folk / Country"], "Ambient": ["Ambient"],
-    "Other": ["Metal", "Afro / Reggae / Latino", "Chanson française", "Musiques du monde"],
-}
-#les humeurs et contextes cochés deviennent des phrases, pour rester dans l'analyse sémantique
-HUMEURS_FRONT = {
-    "Happy": "je me sens joyeux", "Sad": "je suis triste", "Calm": "j'ai envie de calme",
-    "Stressed": "je suis stressé", "Energetic": "je suis plein d'énergie",
-    "Focused": "j'ai besoin de me concentrer", "Melancholic": "je me sens mélancolique",
-    "Romantic": "je suis d'humeur romantique",
-}
-CONTEXTES_FRONT = {
-    "Studying": "pour réviser et étudier", "Working": "pour travailler", "Relaxing": "pour me détendre",
-    "Exercising": "pour faire du sport", "Driving": "en conduisant", "Sleeping": "pour m'endormir",
-    "Partying": "pour faire la fête", "Just vibing": "juste pour le plaisir",
-}
 #pochette de secours : le front a 4 images, on choisit selon le bloc d'humeur principal du morceau
 POCHETTES = {
     "Calme & détente": "calm", "Rêverie & évasion": "calm", "Mélancolie & introspection": "melancholic",
@@ -66,20 +47,9 @@ def pochette(track_id, bloc):
 
 
 def vers_requete(q: Questionnaire):
-    """Questionnaire du front -> requête du moteur de recommandation."""
-    humeur = [q.description] + [HUMEURS_FRONT[m] for m in q.moods if m in HUMEURS_FRONT]
-    contexte = [CONTEXTES_FRONT.get(q.listeningContext, ""), q.contextDescription]
-    textes = humeur + contexte + [q.additionalPreferences]
-    if q.vocalPreference == "Instrumental":
-        textes.append("musique instrumentale sans paroles")
-    return {
-        "textes": [t for t in textes if t.strip()],
-        "humeur": humeur,
-        "contexte": [t for t in contexte if t.strip()],
-        "genres": [g for front in q.genres for g in GENRES_FRONT.get(front, [front])],
-        "artistes": [a.strip() for a in q.favoriteArtists.replace(";", ",").split(",") if a.strip()],
-        "energie": q.energyLevel,
-    }
+    """Questionnaire du front -> requête du moteur : le profil complet (humeur, contexte, préférences)
+    est construit par la partie 6 (backend/personalization), on lui passe toutes les réponses."""
+    return q.model_dump()
 
 
 def pct(x):
@@ -124,7 +94,13 @@ def recommendations(q: Questionnaire):
         "isDemo": False,
         "profile": {"dominantMood": p["humeur_dominante"], "dominantContext": p["contexte_dominant"],
                     "moodBlocks": {b: pct(v) for b, v in p["blocs_humeur"].items()},
-                    "contextBlocks": {b: pct(v) for b, v in p["blocs_contexte"].items()}},
+                    "contextBlocks": {b: pct(v) for b, v in p["blocs_contexte"].items()},
+                    #partie 6
+                    "emotion": p.get("emotion"), "strategy": p.get("strategie"),
+                    "strategySource": p.get("strategie_source"),
+                    "intensity": p.get("intensite"), "excludedGenres": p.get("genres_exclus", []),
+                    "instrumental": p.get("instrumental", False),
+                    "archetype": (p.get("archetype") or {}).get("nom")},
     }
 
 
