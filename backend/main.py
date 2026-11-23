@@ -48,11 +48,21 @@ CONTEXTES_FRONT = {
     "Exercising": "pour faire du sport", "Driving": "en conduisant", "Sleeping": "pour m'endormir",
     "Partying": "pour faire la fête", "Just vibing": "juste pour le plaisir",
 }
-#le front a 4 pochettes, on choisit selon le bloc d'humeur principal du morceau
+#pochette de secours : le front a 4 images, on choisit selon le bloc d'humeur principal du morceau
 POCHETTES = {
     "Calme & détente": "calm", "Rêverie & évasion": "calm", "Mélancolie & introspection": "melancholic",
     "Romance & sensualité": "melancholic", "Concentration": "focused",
 }
+
+
+#vraies pochettes (colonne cover_url du dataset, remplie par dataset_builder/covers.py)
+COVER_URLS = dict(zip(sm.tracks["track_id"], sm.tracks["cover_url"])) if "cover_url" in sm.tracks else {}
+
+
+def pochette(track_id, bloc):
+    """Pochette Spotify du morceau si elle existe, sinon une des 4 images du front."""
+    url = COVER_URLS.get(track_id)
+    return url if isinstance(url, str) and url.startswith("https://") else f"/covers/{POCHETTES.get(bloc, 'energetic')}.svg"
 
 
 def vers_requete(q: Questionnaire):
@@ -90,7 +100,7 @@ def recommendations(q: Questionnaire):
         bloc = r["blocs_humeur"][0] if r["blocs_humeur"] else ""
         recos.append({
             "id": r["track_id"], "rank": r["rang"], "title": r["titre"], "artist": r["artiste"],
-            "coverUrl": f"/covers/{POCHETTES.get(bloc, 'energetic')}.svg",
+            "coverUrl": pochette(r["track_id"], bloc),
             "genre": r["genre"], "mood": (r["humeurs"] or [""])[0].capitalize(),
             "score": pct(r["score"]), "moodScore": pct(c.get("humeur", 0)),
             "genreScore": pct(c.get("genre", 0)), "contextScore": pct(c.get("contexte", 0)),
