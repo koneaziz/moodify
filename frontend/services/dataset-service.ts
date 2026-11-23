@@ -28,7 +28,13 @@ class FastApiDatasetService implements DatasetService {
     if (!baseUrl) throw new Error("Set NEXT_PUBLIC_API_URL to connect the FastAPI backend.");
 
     // Proposed contract (see docs/dataset-contract.md): rows as exported, as an array or { tracks: [...] }.
-    const payload = await fetchJson(`${baseUrl.replace(/\/$/, "")}/tracks`, "Dataset service");
+    // The API does not list the catalogue yet: fall back to the local route reading data/moodify_dataset.json.
+    let payload: unknown;
+    try {
+      payload = await fetchJson(`${baseUrl.replace(/\/$/, "")}/tracks`, "Dataset service");
+    } catch {
+      return localDatasetService.getCatalog();
+    }
     const meta = !Array.isArray(payload) && payload && typeof payload === "object" ? payload as { source?: string; updatedAt?: string } : {};
     return { tracks: normalizeCatalog(payload), source: meta.source ?? "Moodify API", updatedAt: meta.updatedAt, isDemo: false };
   }
