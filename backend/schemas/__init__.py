@@ -49,6 +49,14 @@ class ProfileDetails(BaseModel):
     dominantContext: Optional[str] = None
     moodBlocks: dict[str, int]
     contextBlocks: dict[str, int]
+    #partie 6 (profil utilisateur)
+    emotion: Optional[str] = None           #émotion dominante détectée : colère, tristesse, stress…
+    strategy: Optional[str] = None          #« réguler » (changer d'humeur) ou « accompagner »
+    strategySource: Optional[str] = None    #« texte » (écrit par l'utilisateur) ou « défaut »
+    intensity: Optional[int] = None         #1 à 3
+    excludedGenres: list[str] = []
+    instrumental: bool = False
+    archetype: Optional[str] = None         #profil d'auditeur (data/archetypes.json)
 
 
 class RecommendationResponse(BaseModel):
