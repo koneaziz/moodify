@@ -4,7 +4,7 @@ import { useEffect, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
-import { ArrowUpRight, AudioLines, ChartNoAxesColumn, Database, Disc3, Heart, Headphones, House, ListMusic, MessageCircle, Music2, RotateCcw, Sparkles, Waves } from "lucide-react";
+import { ArrowUpRight, AudioLines, ChartNoAxesColumn, Database, Disc3, Heart, Headphones, House, ListMusic, Music2, Rows3, RotateCcw, Sparkles, Waves } from "lucide-react";
 import { Brand } from "@/components/layout/brand";
 import { DemoBadge } from "@/components/layout/demo-badge";
 import { Button } from "@/components/ui/button";
@@ -21,9 +21,9 @@ import type { QuestionnaireAnswers } from "@/types/questionnaire";
 const navigation = [
   { label: "Découvrir", href: "#top", icon: House },
   { label: "Mes recommandations", href: "#matches", icon: ListMusic },
-  { label: "Chat d’humeur", href: "#chat", icon: MessageCircle },
-  { label: "Explorer", href: "#explore", icon: Disc3 },
+  { label: "Votre mix Moodify", href: "#playlist", icon: Rows3 },
   { label: "Mon profil", href: "#vibe", icon: Heart },
+  { label: "Explorer", href: "#explore", icon: Disc3 },
 ];
 
 function subscribeToSection(update: () => void) {
@@ -47,6 +47,7 @@ export function DiscoverDashboard() {
   const [results, setResults] = useState<RecommendationResponse | null | undefined>(undefined);
   const [answers, setAnswers] = useState<QuestionnaireAnswers | null>(null);
   const [selectedTrack, setSelectedTrack] = useState<Recommendation | null>(null);
+  const [playerExpanded, setPlayerExpanded] = useState(false);
   const [playlistActive, setPlaylistActive] = useState(false);
   const [playRequest, setPlayRequest] = useState(0);
   const activeSection = useSyncExternalStore(subscribeToSection, getActiveSection, () => "#top");
@@ -76,6 +77,7 @@ export function DiscoverDashboard() {
     setPlaylistActive(fromPlaylist);
     if (fromPlaylist) setPlayRequest((request) => request + 1);
     setSelectedTrack(track);
+    setPlayerExpanded(true);
   }
 
   return <div id="top" className="discover-shell min-h-dvh overflow-x-hidden bg-[#0D0D18] text-[#F8F8FC]">
@@ -96,21 +98,22 @@ export function DiscoverDashboard() {
 
         <motion.section initial={reduceMotion ? false : { opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .5 }} className="relative mt-11 overflow-hidden rounded-[30px] border border-white/[.08] bg-[#171727] px-6 py-8 sm:mt-14 sm:px-9 sm:py-10 xl:px-12"><div className="hero-grid absolute inset-0 opacity-40" aria-hidden="true" /><div className="hero-halo absolute -right-15 -top-35 h-[380px] w-[420px] rounded-full" aria-hidden="true" /><div className="relative grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(260px,.72fr)]"><div className="relative z-10"><p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[.23em] text-[#bbb5ff]"><Sparkles size={15} /> Votre bande-son personnalisée</p><h1 className="mt-5 max-w-[650px] text-[clamp(2.45rem,4.6vw,4.8rem)] font-semibold leading-[1.04] tracking-[-.068em]">Au rythme de <span className="text-gradient">votre humeur.</span></h1><p className="mt-5 max-w-[540px] text-base leading-7 text-[#b8b5ca]">{results.profileSummary}</p><div className="mt-7 flex flex-wrap items-center gap-3"><a href="#matches" className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#6C63FF] px-5 text-sm font-semibold text-white shadow-[0_10px_28px_rgba(108,99,255,.25)] transition hover:bg-[#827aff] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#CFCBFF]"><Music2 size={17} /> Voir les recommandations</a><Link href="/" className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-white/15 px-5 text-sm font-semibold text-[#e0deee] transition hover:bg-white/[.07]"><RotateCcw size={16} /> Modifier mon humeur</Link></div></div><div className="hero-art relative mx-auto flex aspect-square w-full max-w-[330px] items-center justify-center"><div className="hero-art-ring absolute inset-[6%] rounded-full border border-[#b4aaff]/15" /><div className="hero-art-ring absolute inset-[19%] rounded-full border border-[#b4aaff]/20" /><div className="hero-art-disc relative flex h-[58%] w-[58%] items-center justify-center rounded-full border-[12px] border-[#171727]/80 bg-[radial-gradient(circle_at_35%_30%,#E94E9A,#6559D9_52%,#27254e_78%)] shadow-[0_25px_75px_rgba(108,99,255,.3)]"><div className="flex h-[37%] w-[37%] items-center justify-center rounded-full border-[8px] border-[#171727]/70 bg-[#bcb4ff] text-[#22203c]"><AudioLines size={28} strokeWidth={1.7} /></div></div><span className="absolute bottom-[9%] left-[7%] rounded-full border border-white/15 bg-[#24243a]/85 px-4 py-2 text-xs font-semibold text-[#e8e5ff] backdrop-blur-sm">{answers.moods[0] && moodLabels[answers.moods[0]]}</span><span className="absolute right-[3%] top-[17%] flex h-9 w-9 items-center justify-center rounded-full bg-[#E94E9A]/85 text-white"><Music2 size={16} /></span></div></div></motion.section>
 
-        <MoodChat isDemo={results.isDemo} onListen={playTrack} />
-
         <section id="vibe" className="scroll-mt-24 pt-11 sm:pt-14"><SectionHeading kicker="EN DÉTAIL" title="Votre profil musical" subtitle="Les préférences qui ont guidé votre sélection." /><div className="mt-6 grid gap-5 xl:grid-cols-[1.15fr_.85fr]"><div className="rounded-[25px] border border-white/[.08] bg-[#171727] p-6 sm:p-7"><div className="flex items-center justify-between gap-4"><div><p className="text-lg font-semibold tracking-tight">Scores d’affinité</p><p className="mt-1 text-sm text-[#9996af]">{results.isDemo ? "Scores du premier morceau de la démo" : "Moyenne des scores de vos trois premiers morceaux"}</p></div><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#6C63FF]/15 text-[#b9b2ff]"><ChartNoAxesColumn size={19} /></span></div><div className="mt-3"><AffinityChart data={results.affinities} isDemo={results.isDemo} /></div>{results.isDemo && <p className="mt-2 text-xs text-[#7f7c96]">Les scores sont fictifs en mode démo.</p>}</div><div className="relative overflow-hidden rounded-[25px] border border-white/[.08] bg-[#171727] p-6 sm:p-7"><div className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#E94E9A]/10 blur-3xl" aria-hidden="true" /><div className="relative"><div className="flex items-center justify-between"><p className="text-lg font-semibold tracking-tight">Votre profil d’écoute</p><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#E94E9A]/12 text-[#f18fbd]"><Heart size={18} /></span></div><p className="mt-4 text-sm leading-7 text-[#b5b2c9]">{results.profileSummary}</p><div className="mt-6 border-t border-white/[.08] pt-5"><p className="text-xs font-semibold uppercase tracking-[.18em] text-[#85819d]">Humeur actuelle</p><div className="mt-3 flex flex-wrap gap-2">{answers.moods.map((mood) => <span key={mood} className="rounded-full border border-[#6C63FF]/25 bg-[#6C63FF]/10 px-3 py-1.5 text-xs font-semibold text-[#d1ccff]">{moodLabels[mood]}</span>)}</div></div><div className="mt-6 border-t border-white/[.08] pt-5"><p className="text-xs font-semibold uppercase tracking-[.18em] text-[#85819d]">Genres sélectionnés</p><div className="mt-3 flex flex-wrap gap-2">{answers.genres.map((genre) => <span key={genre} className="rounded-full border border-white/10 bg-white/[.05] px-3 py-1.5 text-xs font-semibold text-[#c7c3d8]">{genreLabels[genre]}</span>)}</div></div><Link href="/" className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-[#bcb5ff] hover:text-white">Modifier vos réponses <ArrowUpRight size={16} /></Link></div></div></div></section>
 
         <section id="explore" className="scroll-mt-24 pt-11 sm:pt-14"><SectionHeading kicker="UN PEU D’INSPIRATION" title="Explorez les ambiances" subtitle="Quatre ambiances, de la plus douce à la plus énergique." /><div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{scenes.map((scene) => <div key={scene.label} className="scene-card relative min-h-[188px] overflow-hidden rounded-[23px] border border-white/[.08] p-5"><Image src={scene.cover} alt="" fill sizes="(max-width: 640px) 100vw, 25vw" className="object-cover opacity-65" /><div className="absolute inset-0 bg-gradient-to-t from-[#11111f] via-[#11111f]/40 to-transparent" /><div className="relative flex h-full flex-col justify-end"><p className="text-lg font-semibold">{scene.label}</p><p className="mt-1 text-xs text-[#c2bed2]">{scene.subtitle}</p></div></div>)}</div><p className="mt-4 text-xs text-[#77758f]"><Link href="/dataset" className="font-semibold text-[#bcb5ff] hover:text-white">Parcourir toute la bibliothèque musicale</Link></p></section>
       </main>
     </div>
     <nav aria-label="Navigation mobile" className="fixed inset-x-0 bottom-[78px] z-30 flex h-[60px] items-center justify-around border-t border-white/[.08] bg-[#11111e]/95 backdrop-blur-xl lg:hidden"><a href="#top" aria-current={activeSection === "#top" ? "location" : undefined} className="mobile-nav-link aria-[current=location]:text-[#dcd8ff]"><House size={20} /><span>Découvrir</span></a><a href="#matches" aria-current={activeSection === "#matches" ? "location" : undefined} className="mobile-nav-link aria-[current=location]:text-[#dcd8ff]"><ListMusic size={20} /><span>Suggestions</span></a><a href="#vibe" aria-current={activeSection === "#vibe" ? "location" : undefined} className="mobile-nav-link aria-[current=location]:text-[#dcd8ff]"><Heart size={20} /><span>Profil</span></a><Link href="/dataset" className="mobile-nav-link"><Database size={20} /><span>Bibliothèque</span></Link><Link href="/" className="mobile-nav-link"><RotateCcw size={20} /><span>Modifier</span></Link></nav>
+    <MoodChat isDemo={results.isDemo} onListen={playTrack} />
     <MusicPlayer
       track={selectedTrack}
+      expanded={playerExpanded}
+      onExpandedChange={setPlayerExpanded}
       autoPlay={playlistActive}
       playRequest={playRequest}
       onPrevious={previousTrack ? () => setSelectedTrack(previousTrack) : undefined}
       onNext={nextTrack ? () => setSelectedTrack(nextTrack) : undefined}
-      onClose={() => { setSelectedTrack(null); setPlaylistActive(false); }}
+      onClose={() => { setSelectedTrack(null); setPlaylistActive(false); setPlayerExpanded(false); }}
     />
   </div>;
 }

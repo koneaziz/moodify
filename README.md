@@ -63,3 +63,11 @@ Les libellés affichés en français conservent les mêmes identifiants côté A
 - [Architecture et responsabilités](docs/architecture.md) et [conception initiale](docs/conception-initiale.md).
 - [Guide du frontend](frontend/README.md), [contrat de recommandation](frontend/docs/api-contract.md) et [contrat du catalogue](frontend/docs/dataset-contract.md).
 - Notebooks [NLP sémantique](notebooks/02_nlp_semantique.ipynb) et [recommandation et API](notebooks/03_recommandation_api.ipynb).
+
+## Auteurs
+
+- Dossongui Kone (`koneaziz`)
+- Houyem Jouini
+- Maureen (`dimailigmaureen`)
+- Messade Djabali
+- Mohamed Mahdi Kharrat

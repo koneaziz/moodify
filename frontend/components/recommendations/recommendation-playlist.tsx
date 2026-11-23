@@ -15,7 +15,7 @@ export function RecommendationPlaylist({ tracks, selectedTrack, onPlay }: Playli
   const firstPlayable = tracks.find(canPlay);
 
   return (
-    <section aria-labelledby="playlist-title" className="mt-11 overflow-hidden rounded-[30px] border border-[#9b8bfd]/25 bg-[#171625] shadow-[0_20px_80px_rgba(7,5,18,.28)] sm:mt-14">
+    <section id="playlist" aria-labelledby="playlist-title" className="mt-11 scroll-mt-24 overflow-hidden rounded-[30px] border border-[#9b8bfd]/25 bg-[#171625] shadow-[0_20px_80px_rgba(7,5,18,.28)] sm:mt-14">
       <div className="relative isolate flex items-center gap-5 overflow-hidden border-b border-white/10 bg-[linear-gradient(120deg,#30235e_0%,#251c43_55%,#3c2142_100%)] px-5 py-7 sm:gap-8 sm:px-9 sm:py-9">
         <div aria-hidden="true" className="pointer-events-none absolute -right-14 -top-28 -z-10 h-[320px] w-[320px] rounded-full border-[36px] border-[#e39adc]/10 shadow-[0_0_0_22px_rgba(227,154,220,.07),0_0_0_48px_rgba(227,154,220,.05)]" />
         <div aria-hidden="true" className="relative grid h-20 w-20 shrink-0 place-items-center rounded-2xl border border-white/20 bg-[linear-gradient(150deg,#ac8bff,#7356dc_50%,#a44797)] text-white shadow-[0_16px_42px_rgba(12,8,38,.45)] sm:h-32 sm:w-32 sm:rounded-[24px]">
