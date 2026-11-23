@@ -208,7 +208,7 @@ function TrackCard({ track, tone }: { track: CatalogTrack; tone: string }) {
   return (
     <motion.article whileHover={{ y: -4 }} transition={{ duration: .2 }} className="flex min-w-0 flex-col rounded-[25px] border border-white/[.08] bg-[#1a1a2c] p-5 shadow-[0_15px_40px_rgba(0,0,0,.14)]">
       <div className="flex items-start gap-4">
-        <span className={cn("flex h-12 w-12 shrink-0 items-center justify-center rounded-[15px]", tone)}><Music2 size={21} strokeWidth={1.8} /></span>
+        <TrackCover track={track} tone={tone} className="h-12 w-12 rounded-[15px]" iconSize={21} />
         <div className="min-w-0 flex-1"><h3 className="truncate text-lg font-semibold tracking-[-.03em] text-white">{track.title}</h3><p className="mt-0.5 truncate text-sm text-[#a6a3bc]">{byline}{track.album ? <span className="text-[#77758f]"> · {track.album}</span> : null}</p></div>
         <span className="max-w-[40%] shrink-0 truncate rounded-full bg-white/[.06] px-3 py-1 text-xs text-[#c7c3dc]" title={track.genre}>{track.genre}</span>
       </div>
@@ -220,6 +220,16 @@ function TrackCard({ track, tone }: { track: CatalogTrack; tone: string }) {
       </div>
     </motion.article>
   );
+}
+
+function TrackCover({ track, tone, className, iconSize }: { track: CatalogTrack; tone: string; className: string; iconSize: number }) {
+  const [failed, setFailed] = useState(false);
+  if (track.coverUrl && !failed) {
+    // Plain <img>: artwork is served by Spotify's CDN and does not need Next.js image optimisation.
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={track.coverUrl} alt={`Artwork for ${track.title}`} loading="lazy" onError={() => setFailed(true)} className={cn("shrink-0 bg-[#26263b] object-cover", className)} />;
+  }
+  return <span className={cn("flex shrink-0 items-center justify-center", tone, className)}><Music2 size={iconSize} strokeWidth={1.8} /></span>;
 }
 
 function TrackDetails({ track, tone }: { track: CatalogTrack; tone: string }) {
@@ -246,7 +256,7 @@ function TrackDetails({ track, tone }: { track: CatalogTrack; tone: string }) {
       <DialogTrigger asChild><Button type="button" size="sm" variant="secondary" aria-label={`Details for ${track.title}`}><Info size={15} /> Details</Button></DialogTrigger>
       <DialogContent className="max-w-2xl">
         <div className="pr-9">
-          <div className="mb-5 flex items-center gap-4"><span className={cn("flex h-16 w-16 shrink-0 items-center justify-center rounded-xl", tone)}><Music2 size={26} strokeWidth={1.8} /></span><div className="min-w-0"><p className="mb-1 text-xs font-semibold uppercase tracking-[.2em] text-[#ada7ff]">{track.genre}</p><DialogTitle className="text-2xl font-semibold tracking-tight text-white">{track.title}</DialogTitle><DialogDescription className="mt-1 text-sm text-[#aaa8be]">{[track.artist, ...track.featuredArtists].join(", ")}{track.album ? ` · ${track.album}` : ""}</DialogDescription></div></div>
+          <div className="mb-5 flex items-center gap-4"><TrackCover track={track} tone={tone} className="h-16 w-16 rounded-xl" iconSize={26} /><div className="min-w-0"><p className="mb-1 text-xs font-semibold uppercase tracking-[.2em] text-[#ada7ff]">{track.genre}</p><DialogTitle className="text-2xl font-semibold tracking-tight text-white">{track.title}</DialogTitle><DialogDescription className="mt-1 text-sm text-[#aaa8be]">{[track.artist, ...track.featuredArtists].join(", ")}{track.album ? ` · ${track.album}` : ""}</DialogDescription></div></div>
           {track.spotifyTrackId && <div className="mb-5"><iframe title={`Spotify player for ${track.title}`} src={`https://open.spotify.com/embed/track/${track.spotifyTrackId}?utm_source=generator&theme=0`} width="100%" height="80" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" className="rounded-xl border-0 bg-[#222238]" /><a href={`https://open.spotify.com/track/${track.spotifyTrackId}`} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-[#bcb5ff] hover:text-white">Open in Spotify <ArrowUpRight size={14} /></a></div>}
           <div className="rounded-2xl border border-[#6C63FF]/20 bg-[#6C63FF]/[.08] p-4"><div className="mb-2 flex items-center gap-2 text-sm font-semibold text-[#d1ccff]"><FileText size={15} /> Description analysed by NLP</div><p className="text-sm leading-6 text-[#c6c3d9]">{track.description}</p></div>
           <TagGroup title="Moods" values={track.moods} accent />

@@ -10,6 +10,11 @@ function num(value: number | null | undefined) {
   return typeof value === "number" && Number.isFinite(value) ? value : undefined;
 }
 
+function imageUrl(value: string | null | undefined) {
+  const url = value?.trim();
+  return url && (url.startsWith("https://") || url.startsWith("/")) ? url : undefined;
+}
+
 function text(value: string | null | undefined) {
   const trimmed = value?.trim();
   return trimmed ? trimmed : undefined;
@@ -46,6 +51,7 @@ export function normalizeRow(row: RawCatalogRow): CatalogTrack {
     source: text(row.source),
     moodSource: text(row.mood_source),
     descriptionSource: text(row.description_source),
+    coverUrl: imageUrl(row.cover_url),
     spotifyTrackId: SPOTIFY_ID.test(row.track_id) ? row.track_id : undefined,
     popularity: num(row.popularity),
     audio: danceability !== undefined && energyRaw !== undefined && valence !== undefined && acousticness !== undefined && instrumentalness !== undefined && tempo !== undefined

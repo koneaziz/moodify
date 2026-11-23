@@ -32,6 +32,8 @@ export type RawCatalogRow = {
   muse_valence: number | null;
   muse_arousal: number | null;
   russell_quadrant: string | null;
+  /** Album artwork URL (optional column produced by dataset_builder/covers.py). */
+  cover_url?: string | null;
 };
 
 export type AudioFeatures = {
@@ -65,6 +67,8 @@ export type CatalogTrack = {
   source?: string;
   moodSource?: string;
   descriptionSource?: string;
+  /** Album artwork (https URL or root-relative path), when the dataset provides one. */
+  coverUrl?: string;
   /** Present only when track_id is a genuine 22-character Spotify ID. */
   spotifyTrackId?: string;
   popularity?: number;
