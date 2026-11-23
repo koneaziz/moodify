@@ -9,11 +9,10 @@ Requirements: Node.js 20.9 or newer and npm.
 ```bash
 cd frontend
 npm install
-cp .env.example .env.local
 npm run dev
 ```
 
-Open <http://localhost:3000>. The default configuration uses **Demo Mode** and needs no backend or Spotify key.
+Open <http://localhost:3000>. `npm run dev` reads the committed `.env.development`, which uses the **FastAPI backend** (`NEXT_PUBLIC_USE_MOCKS=false`, API on `http://localhost:8000`): start it first from the repository root with `MOODIFY_ENCODER=tfidf python -m uvicorn backend.main:app --port 8000` (Windows cmd: `set MOODIFY_ENCODER=tfidf` first). To work offline in **Demo Mode**, create `.env.local` with `NEXT_PUBLIC_USE_MOCKS=true`; it overrides `.env.development` and is not committed.
 
 Useful checks:
 
@@ -33,9 +32,9 @@ The local `public/audio/quiet-current-demo.wav` is an original synthetic instrum
 
 ## Connecting FastAPI
 
-The components call the `RecommendationService` interface in `services/recommendation-service.ts`; they never import mock data directly. Set `NEXT_PUBLIC_USE_MOCKS=false` and `NEXT_PUBLIC_API_URL` in `.env.local` after the backend team implements the agreed endpoint. The current HTTP adapter uses a **proposed** `POST /recommendations` route; it is not implemented in this repository. Adapt that file if the team chooses another route or payload.
+The components call the `RecommendationService` interface in `services/recommendation-service.ts`; they never import mock data directly. `NEXT_PUBLIC_USE_MOCKS` and `NEXT_PUBLIC_API_URL` select the service (see `.env.development`). The HTTP adapter calls the backend's `POST /recommendations` route (`backend/main.py`).
 
-The proposed request and response contract is in [API contract](./docs/api-contract.md). The music library page (`/dataset`) uses `services/dataset-service.ts` and a proposed `GET /tracks` route described in [Dataset contract](./docs/dataset-contract.md); in Demo Mode it reads `data/moodify_dataset.json` at the repository root through the local route `app/api/tracks/route.ts` (no copy in the frontend). The backend must allow the frontend origin through CORS if the two apps run on separate local ports.
+The proposed request and response contract is in [API contract](./docs/api-contract.md). The music library page (`/dataset`) uses `services/dataset-service.ts` and a proposed `GET /tracks` route described in [Dataset contract](./docs/dataset-contract.md); until the API lists the catalogue (and in Demo Mode) it reads `data/moodify_dataset.json` at the repository root through the local route `app/api/tracks/route.ts` (no copy in the frontend). The backend must allow the frontend origin through CORS if the two apps run on separate local ports.
 
 ## Code map
 

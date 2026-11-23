@@ -17,6 +17,7 @@ __pycache__/
 .env
 .env.*
 !.env.example
+!frontend/.env.development
 data/processed/*
 !data/processed/.gitkeep
 
