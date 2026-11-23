@@ -1,6 +1,6 @@
 # Moodify frontend
 
-Next.js App Router frontend for **Moodify — Your mood, your music.** It starts on a seven-step questionnaire and shows three recommendations on `/discover`.
+Next.js App Router frontend for **Moodify — Your mood, your music.** It starts on a seven-step questionnaire, shows three recommendations on `/discover`, and lets users browse the reference catalogue on `/dataset`.
 
 ## Run locally
 
@@ -35,13 +35,14 @@ The local `public/audio/quiet-current-demo.wav` is an original synthetic instrum
 
 The components call the `RecommendationService` interface in `services/recommendation-service.ts`; they never import mock data directly. Set `NEXT_PUBLIC_USE_MOCKS=false` and `NEXT_PUBLIC_API_URL` in `.env.local` after the backend team implements the agreed endpoint. The current HTTP adapter uses a **proposed** `POST /recommendations` route; it is not implemented in this repository. Adapt that file if the team chooses another route or payload.
 
-The proposed request and response contract is in [API contract](./docs/api-contract.md). The backend must allow the frontend origin through CORS if the two apps run on separate local ports.
+The proposed request and response contract is in [API contract](./docs/api-contract.md). The music library page (`/dataset`) uses `services/dataset-service.ts` and a proposed `GET /tracks` route described in [Dataset contract](./docs/dataset-contract.md); in Demo Mode it reads `data/moodify_dataset.json` at the repository root through the local route `app/api/tracks/route.ts` (no copy in the frontend). The backend must allow the frontend origin through CORS if the two apps run on separate local ports.
 
 ## Code map
 
 - `app/`: routes and global theme.
 - `components/questionnaire/`: guided form and analysis transition.
 - `components/recommendations/`: dashboard, recommendation cards and Recharts chart.
+- `components/dataset/`: music library page, distribution charts, emotion map, provenance and data quality checks.
 - `components/player/`: HTML5 audio and official embed player.
 - `components/ui/`: customized shadcn/ui-style Radix primitives.
 - `types/`, `lib/`, `services/`, `mocks/`: models, validation, persistence, service adapters and fictional data.
