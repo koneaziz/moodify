@@ -3,7 +3,8 @@ export type Recommendation = {
   rank: number;
   title: string;
   artist: string;
-  coverUrl: string;
+  /** Local path or Spotify CDN URL; empty or missing shows a default cover. */
+  coverUrl?: string;
   genre: string;
   mood: string;
   durationSeconds?: number;
