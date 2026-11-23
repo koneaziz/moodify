@@ -1,0 +1,15 @@
+community_id,name,description,genres,moods,contexts
+C01,Lofi Study Club,"Communauté d'étudiants qui révisent ensemble en musique lo-fi et chillhop. Sessions Pomodoro partagées, playlists calmes et instrumentales pour rester concentré.",Lo-fi / Chillhop|Jazz|Ambient,Concentration|Calme & détente,Étude & travail
+C02,Jazz & Café,"Amateurs de jazz feutré, de piano et de saxophone, pour travailler au café ou se détendre le soir. Partage de standards et de découvertes.",Jazz|R&B / Soul,Calme & détente|Romance & sensualité,Étude & travail|Moment à deux
+C03,Classique pour réviser,"Piano, cordes et néo-classique pour se concentrer pendant les examens. Échanges sur Debussy, Satie, Einaudi et la musique de film.",Classique|Ambient,Concentration|Mélancolie & introspection,Étude & travail
+C04,Run & Beats,"Coureurs et sportifs qui partagent des playlists électro et hip-hop à tempo élevé pour tenir l'effort et battre leurs records.",Électro / House|Hip-hop US|Pop,Énergie & motivation,Sport
+C05,Défouloir Metal,"Fans de metal, thrash et nu metal qui évacuent la pression avec des riffs lourds. Partage de concerts, de pogos et de découvertes.",Metal|Rock,Colère & défoulement|Énergie & motivation,Sport
+C06,Rap FR Sessions,"Passionnés de rap français, du rap conscient des années 90 au cloud rap actuel. Analyse de textes et partage de sorties.",Rap FR,Mélancolie & introspection|Énergie & motivation,Trajet
+C07,Afro & Latino Vibes,"Afrobeats, reggaeton, reggae et son cubain : une communauté solaire qui partage des sons pour danser et profiter de l'été.",Afro / Reggae / Latino,Fête & danse|Joie & bonne humeur,Soirée & fête
+C08,Chanson & Nostalgie,"Chanson française d'hier et d'aujourd'hui, de Piaf à Angèle. Pour ceux qui aiment les textes, la poésie et les souvenirs.",Chanson française,Mélancolie & introspection|Romance & sensualité,Moment à deux
+C09,Indie Folk au coin du feu,"Guitares acoustiques, harmonies vocales et ballades indie pour les soirées tranquilles et les marches dans la nature.",Indie / Folk,Calme & détente|Mélancolie & introspection,Trajet
+C10,House Party Crew,"Organisateurs et fans de soirées house, french touch et électro. Playlists de fête et bons plans clubs.",Électro / House|Pop,Fête & danse|Joie & bonne humeur,Soirée & fête
+C11,Late Night R&B,"R&B, soul et sons nocturnes sensuels pour les fins de soirée et les moments à deux.",R&B / Soul|Pop,Romance & sensualité|Rêverie & évasion,Moment à deux
+C12,Ambient Sleep,"Ambient, drones et nappes de synthé pour s'endormir, méditer et réduire l'anxiété.",Ambient|Classique,Calme & détente|Rêverie & évasion,Sommeil & méditation
+C13,Cœurs Brisés,"Un espace bienveillant pour partager les chansons qui accompagnent les ruptures et les jours tristes.",Pop|Indie / Folk|R&B / Soul,Mélancolie & introspection,Solitude & pluie
+C14,Good Vibes Morning,"Soul, reggae et pop ensoleillée pour bien commencer la journée et garder le sourire.",R&B / Soul|Afro / Reggae / Latino|Pop,Joie & bonne humeur,Matin & quotidien

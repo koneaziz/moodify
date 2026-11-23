@@ -1,0 +1,9 @@
+{
+  "_doc": "Lien personnalité → préférences musicales, inspiré du modèle STOMP (Rentfrow & Gosling, 2003). Les corrélations observées dans la littérature sont FAIBLES (r ≈ 0.1–0.3) : on s'en sert uniquement comme un léger a priori (poids beta faible dans le score), jamais comme critère principal.",
+  "dimensions": {
+    "Réflexif & complexe": {"genres": ["Jazz", "Classique", "Indie / Folk", "Ambient", "Lo-fi / Chillhop", "Chanson française"], "traits": {"openness": 1.0}},
+    "Intense & rebelle": {"genres": ["Rock", "Metal"], "traits": {"openness": 0.6}},
+    "Optimiste & conventionnel": {"genres": ["Pop", "Chanson française"], "traits": {"extraversion": 0.6, "agreeableness": 0.6, "conscientiousness": 0.4, "openness": -0.4}},
+    "Énergique & rythmé": {"genres": ["Rap FR", "Hip-hop US", "Électro / House", "R&B / Soul", "Afro / Reggae / Latino"], "traits": {"extraversion": 1.0, "agreeableness": 0.3}}
+  }
+}

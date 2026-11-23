@@ -1,0 +1,36 @@
+concert_id,artist,city,venue,date,source
+K01,Justice,Paris,Accor Arena,2027-03-12,simulé
+K02,Justice,Lyon,Halle Tony Garnier,2027-03-15,simulé
+K03,Gojira,Bordeaux,Arkéa Arena,2027-02-20,simulé
+K04,Gojira,Paris,Accor Arena,2027-02-27,simulé
+K05,Angèle,Bruxelles,Forest National,2027-04-03,simulé
+K06,Angèle,Lille,Zénith de Lille,2027-04-06,simulé
+K07,Orelsan,Rennes,Le Liberté,2027-01-29,simulé
+K08,Orelsan,Nantes,Zénith Nantes Métropole,2027-01-31,simulé
+K09,Nekfeu,Marseille,Le Dôme,2027-05-10,simulé
+K10,PNL,Paris,Stade de France,2027-06-19,simulé
+K11,Damso,Bruxelles,Palais 12,2027-03-27,simulé
+K12,Stromae,Genève,Arena de Genève,2027-05-22,simulé
+K13,Christine and the Queens,Paris,Olympia,2027-02-14,simulé
+K14,Ludovico Einaudi,Lyon,Auditorium de Lyon,2027-03-04,simulé
+K15,Max Richter,Paris,Philharmonie de Paris,2027-04-17,simulé
+K16,Nils Frahm,Strasbourg,La Laiterie,2027-02-06,simulé
+K17,Tycho,Toulouse,Le Bikini,2027-03-20,simulé
+K18,Bonobo,Lyon,Le Transbordeur,2027-04-10,simulé
+K19,Dua Lipa,Paris,Accor Arena,2027-06-02,simulé
+K20,The Weeknd,Marseille,Orange Vélodrome,2027-07-08,simulé
+K21,Billie Eilish,Paris,Paris La Défense Arena,2027-06-25,simulé
+K22,Arctic Monkeys,Nîmes,Arènes de Nîmes,2027-07-15,simulé
+K23,Metallica,Paris,Stade de France,2027-06-12,simulé
+K24,Slipknot,Lyon,LDLC Arena,2027-05-29,simulé
+K25,Kendrick Lamar,Paris,Paris La Défense Arena,2027-07-01,simulé
+K26,SZA,Paris,Accor Arena,2027-05-15,simulé
+K27,Burna Boy,Paris,Stade de France,2027-06-28,simulé
+K28,Wizkid,Lille,Zénith de Lille,2027-04-24,simulé
+K29,Bad Bunny,Madrid,Estadio Metropolitano,2027-07-24,simulé
+K30,Phoebe Bridgers,Paris,Olympia,2027-03-08,simulé
+K31,Tame Impala,Nice,Palais Nikaïa,2027-05-02,simulé
+K32,Fleet Foxes,Montpellier,Rockstore,2027-04-14,simulé
+K33,Kavinsky,Toulouse,Zénith Toulouse Métropole,2027-02-12,simulé
+K34,Calvin Harris,Nice,Palais Nikaïa,2027-07-18,simulé
+K35,Daniel Caesar,Bruxelles,Ancienne Belgique,2027-03-30,simulé

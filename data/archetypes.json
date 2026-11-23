@@ -1,0 +1,41 @@
+{
+  "_doc": "Profils d'auditeur (équivalent des 'profils de poste' du sujet). Chaque profil requiert certains blocs d'humeur, avec un poids. Le score de couverture d'un profil = somme(Wi * Si) / somme(Wi) sur ses blocs requis.",
+  "archetypes": [
+    {
+      "id": "A01",
+      "name": "Le Focus Chill",
+      "description": "Tu utilises la musique comme un cocon pour te concentrer : lo-fi, jazz, piano, ambient.",
+      "blocks": {"Concentration": 2, "Calme & détente": 1.5, "Rêverie & évasion": 1}
+    },
+    {
+      "id": "A02",
+      "name": "Le Boost Énergie",
+      "description": "Tu cherches de l'adrénaline : sport, motivation, sons puissants qui donnent la pêche.",
+      "blocks": {"Énergie & motivation": 2, "Fête & danse": 1, "Colère & défoulement": 1}
+    },
+    {
+      "id": "A03",
+      "name": "L'Âme Mélancolique",
+      "description": "Tu vis la musique comme un miroir de tes émotions : ballades, introspection, nostalgie.",
+      "blocks": {"Mélancolie & introspection": 2, "Rêverie & évasion": 1, "Romance & sensualité": 0.5}
+    },
+    {
+      "id": "A04",
+      "name": "Le Fêtard Solaire",
+      "description": "La musique, c'est la fête, le soleil et les amis : ça doit danser et sourire.",
+      "blocks": {"Fête & danse": 2, "Joie & bonne humeur": 1.5, "Énergie & motivation": 1}
+    },
+    {
+      "id": "A05",
+      "name": "Le Rebelle Cathartique",
+      "description": "Tu évacues tout par le son : guitares saturées, rap percutant, intensité maximale.",
+      "blocks": {"Colère & défoulement": 2, "Énergie & motivation": 1.5}
+    },
+    {
+      "id": "A06",
+      "name": "Le Romantique Rêveur",
+      "description": "Tu aimes les ambiances tendres, sensuelles et douces, à partager ou à rêver.",
+      "blocks": {"Romance & sensualité": 2, "Calme & détente": 1, "Rêverie & évasion": 1}
+    }
+  ]
+}
