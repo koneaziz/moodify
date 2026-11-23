@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { DatasetExplorer } from "@/components/dataset/dataset-explorer";
 
 export const metadata: Metadata = {
-  title: "Dataset — Moodify",
-  description: "Browse the reference music catalogue used by Moodify's semantic recommendations.",
+  title: "Bibliothèque musicale — Moodify",
+  description: "Explorez le catalogue musical utilisé pour les recommandations de Moodify.",
 };
 
 export default function DatasetPage() {

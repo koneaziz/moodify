@@ -15,7 +15,7 @@ export function DialogContent({ className, children, ...props }: React.Component
       <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-[#070710]/80 backdrop-blur-sm data-[state=open]:animate-in" />
       <DialogPrimitive.Content className={cn("fixed left-1/2 top-1/2 z-50 max-h-[90dvh] w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-[28px] border border-white/10 bg-[#171727] p-6 shadow-2xl outline-none sm:p-8", className)} {...props}>
         {children}
-        <DialogPrimitive.Close className="absolute right-5 top-5 rounded-full p-2 text-white/60 transition hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#CFCBFF]" aria-label="Close details"><X size={18} /></DialogPrimitive.Close>
+        <DialogPrimitive.Close className="absolute right-5 top-5 rounded-full p-2 text-white/60 transition hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#CFCBFF]" aria-label="Fermer les détails"><X size={18} /></DialogPrimitive.Close>
       </DialogPrimitive.Content>
     </DialogPrimitive.Portal>
   );

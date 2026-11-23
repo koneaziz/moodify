@@ -12,17 +12,21 @@ from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 
 #le module NLP de la partie 3 est dans src/moodify
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+from moodify.chatbot import BLOCK_ENERGY, ChatIntentIndex, parse_message  # noqa: E402
 from moodify.semantic import SemanticMatcher  # noqa: E402
 
 from backend.recommendation.recommender import recommander  # noqa: E402
-from backend.schemas import Questionnaire, RecommendationResponse  # noqa: E402
+from backend.schemas import ChatRequest, ChatResponse, Questionnaire, RecommendationResponse  # noqa: E402
 
 #chargé une seule fois au démarrage : dataset + modèle SBERT + embeddings du catalogue
 #(MOODIFY_ENCODER=tfidf permet de tester sans télécharger le modèle)
 sm = SemanticMatcher(os.getenv("MOODIFY_ENCODER", "sbert"))
+
+chat_index = ChatIntentIndex(sm)
 
 app = FastAPI(title="Moodify API")
 
@@ -86,16 +90,9 @@ def pct(x):
     return int(round(100 * float(x)))
 
 
-@app.get("/")
-def accueil():
-    return {"status": "ok", "nb_morceaux": len(sm.tracks), "encodeur": sm.encoder.name}
-
-
-@app.post("/recommendations", response_model=RecommendationResponse, response_model_exclude_none=True)
-def recommendations(q: Questionnaire):
-    res = recommander(sm, vers_requete(q), top_k=3)
+def vers_recommandations(resultats):
     recos = []
-    for r in res["recommandations"]:
+    for r in resultats:
         c = r["criteres"]
         bloc = r["blocs_humeur"][0] if r["blocs_humeur"] else ""
         recos.append({
@@ -108,9 +105,23 @@ def recommendations(q: Questionnaire):
             #les identifiants de 22 caractères sont de vrais identifiants Spotify
             "spotifyTrackId": r["track_id"] if len(r["track_id"]) == 22 else None,
         })
+    return recos
+
+
+@app.get("/")
+def accueil():
+    return {"status": "ok", "nb_morceaux": len(sm.tracks), "encodeur": sm.encoder.name}
+
+
+@app.post("/recommendations", response_model=RecommendationResponse, response_model_exclude_none=True)
+def recommendations(q: Questionnaire):
+    res = recommander(sm, vers_requete(q), top_k=10)
+    recos = vers_recommandations(res["recommandations"])
+
+    top_matches = recos[:3]
 
     def moyenne(cle):
-        return int(round(sum(x[cle] for x in recos) / max(len(recos), 1)))
+        return int(round(sum(x[cle] for x in top_matches) / max(len(top_matches), 1)))
 
     p = res["profil"]
     return {
@@ -126,6 +137,62 @@ def recommendations(q: Questionnaire):
                     "moodBlocks": {b: pct(v) for b, v in p["blocs_humeur"].items()},
                     "contextBlocks": {b: pct(v) for b, v in p["blocs_contexte"].items()}},
     }
+
+
+# Le module de chat reconnaît les catégories de l'ancien catalogue.
+GENRES_CHAT = {
+    "Lo-fi / Chillhop": "Lo-fi / Chill",
+    "Jazz": "Jazz / Blues",
+    "Rap FR": "Hip-hop / Rap",
+    "Hip-hop US": "Hip-hop / Rap",
+    "R&B / Soul": "R&B / Soul / Funk",
+    "Indie / Folk": "Indie / Folk / Country",
+}
+
+
+@app.post("/chat", response_model=ChatResponse, response_model_exclude_none=True)
+def chat(q: ChatRequest):
+    message = q.message.strip()
+    if len(message) < 3:
+        raise HTTPException(status_code=422, detail="Écrivez un message d’au moins trois caractères.")
+
+    intention = parse_message(chat_index, message)
+    if intention.needs_clarification or not intention.target_block:
+        return {
+            "reply": "Quelle ambiance recherchez-vous ? Par exemple, des morceaux calmes pour vous détendre ou rythmés pour faire du sport.",
+            "recommendations": [],
+        }
+
+    bloc = intention.target_block
+    recherche = intention.desire_text or intention.state_text
+    genres_exclus = sorted({GENRES_CHAT.get(genre, genre) for genre in intention.excluded_genres})
+    resultats = recommander(sm, {
+        "textes": [recherche, bloc, *intention.contexts],
+        "humeur": [bloc],
+        "bloc_humeur": bloc,
+        "contexte": intention.contexts,
+        "energie": round(BLOCK_ENERGY.get(bloc, 3)),
+        "genres_exclus": genres_exclus,
+    }, top_k=3)
+    recos = vers_recommandations(resultats["recommandations"])
+
+    phrases = []
+    if intention.emotion:
+        phrases.append(f"Votre message évoque cette émotion : {intention.emotion}.")
+    phrases.append(f"Je vous propose une ambiance « {bloc} ».")
+    if genres_exclus:
+        phrases.append(f"Genres écartés : {', '.join(genres_exclus)}.")
+    if not recos:
+        phrases.append("Aucun titre ne correspond. Vous pouvez préciser votre demande.")
+    return {"reply": " ".join(phrases), "recommendations": recos}
+
+
+@app.get("/tracks")
+def catalogue():
+    chemin = Path(__file__).resolve().parents[1] / "data" / "moodify_dataset.json"
+    if not chemin.is_file():
+        raise HTTPException(status_code=404, detail="Catalogue introuvable")
+    return FileResponse(chemin, media_type="application/json")
 
 
 @app.get("/tracks/{track_id}")

@@ -64,6 +64,9 @@ def construire_profil(sm, requete):
         "contexte_brut": sm.context_affinity(contexte) if contexte else {},
     }
     profil["blocs_humeur"] = normaliser(profil["humeur_brut"])
+    bloc_cible = requete.get("bloc_humeur")
+    if bloc_cible in profil["blocs_humeur"]:
+        profil["blocs_humeur"][bloc_cible] = 1.0
     profil["blocs_contexte"] = normaliser(profil["contexte_brut"])
     profil["humeur_dominante"] = max(profil["blocs_humeur"], key=profil["blocs_humeur"].get)
     profil["contexte_dominant"] = (max(profil["blocs_contexte"], key=profil["blocs_contexte"].get)

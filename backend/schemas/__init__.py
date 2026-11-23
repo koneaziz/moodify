@@ -58,3 +58,12 @@ class RecommendationResponse(BaseModel):
     scenario: str
     isDemo: bool
     profile: ProfileDetails
+
+
+class ChatRequest(BaseModel):
+    message: str = Field(min_length=3, max_length=1000)
+
+
+class ChatResponse(BaseModel):
+    reply: str
+    recommendations: list[Recommendation]

@@ -1,6 +1,6 @@
-# Proposed recommendation API contract
+# Recommendation API contract
 
-This is a **frontend proposal** for the FastAPI team to agree or adjust before integration. No backend endpoint is created by the frontend.
+FastAPI serves this contract in `backend/main.py`.
 
 ## Request
 
@@ -55,8 +55,12 @@ The frontend validates at least one mood, a description of 20–1000 characters,
 }
 ```
 
-Return up to three ranked recommendations. All scores are percentages from 0 to 100. The backend should derive explanations from actual NLP and scoring results. `coverUrl` must be a URL that the frontend is configured to display. Omit optional audio and external music fields when unavailable; do not send null unless the response schema explicitly permits it.
+Return up to ten ranked recommendations for the playlist. Discover highlights the first three and shows their average scores as affinities. All scores are percentages from 0 to 100. The backend should derive explanations from actual NLP and scoring results. `coverUrl` must be a URL that the frontend is configured to display. Omit optional audio and external music fields when unavailable; do not send null unless the response schema explicitly permits it.
 
 For Spotify playback, `spotifyTrackId` must be a genuine 22-character track ID. For Apple Music, `appleMusicEmbedUrl` must use `https://embed.music.apple.com/`. For local audio, only return authorized files or URLs.
 
-The frontend's `FastApiRecommendationService` currently assumes this response shape and route. If the backend adopts a different schema, adapt only that service layer and retain the UI types.
+The frontend's `FastApiRecommendationService` uses this response shape and route. If the backend adopts a different schema, adapt only that service layer and retain the UI types.
+
+## Mood chat
+
+POST /chat accepts a JSON object with a message (3 to 1,000 characters). It returns a French reply and up to three recommendations with the same fields as above. When the engine asks the user to clarify, the recommendations array is empty. Each message is analysed independently.

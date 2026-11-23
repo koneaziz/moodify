@@ -24,6 +24,7 @@ data/processed/*
 # Notebook and OS files
 .ipynb_checkpoints/
 .DS_Store
+CE_QUI_A_ETE_FAIT.md
 
 # Cache des embeddings SBERT
 data/cache/

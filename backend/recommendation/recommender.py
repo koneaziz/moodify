@@ -35,11 +35,12 @@ def recommander(sm, requete, top_k=3):
     df = sm.tracks
     total = sum(poids.values())
 
+    genres_exclus = set(requete.get("genres_exclus", ()))
     resultats, artistes_vus = [], set()
     for i in score.sort_values(ascending=False).index:
         m = df.loc[i].fillna("")
         #un seul morceau par artiste pour avoir un top varié
-        if m["artist"] in artistes_vus:
+        if m["genre"] in genres_exclus or m["artist"] in artistes_vus:
             continue
         artistes_vus.add(m["artist"])
 

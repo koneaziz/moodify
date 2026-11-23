@@ -66,6 +66,6 @@ export function normalizeRow(row: RawCatalogRow): CatalogTrack {
 /** Accepts either a bare array of rows or an object with a `tracks` array. */
 export function normalizeCatalog(payload: unknown): CatalogTrack[] {
   const rows = Array.isArray(payload) ? payload : (payload as { tracks?: unknown })?.tracks;
-  if (!Array.isArray(rows)) throw new Error("The dataset response is not a list of tracks.");
+  if (!Array.isArray(rows)) throw new Error("Le catalogue reçu ne contient pas une liste de morceaux.");
   return (rows as RawCatalogRow[]).map(normalizeRow);
 }

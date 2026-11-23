@@ -24,9 +24,9 @@ export function computeDatasetStats(tracks: CatalogTrack[]) {
   const artists = new Set(tracks.map((track) => track.artist.toLowerCase())).size;
   const averageWords = tracks.length ? Math.round(tracks.reduce((sum, track) => sum + wordCount(track.description), 0) / tracks.length) : 0;
   const provenance = {
-    source: countBy(tracks.map((track) => track.source ?? "Not documented")),
-    moodSource: countBy(tracks.map((track) => track.moodSource ?? "Not documented")),
-    descriptionSource: countBy(tracks.map((track) => track.descriptionSource ?? "Not documented")),
+    source: countBy(tracks.map((track) => track.source ?? "Non renseignée")),
+    moodSource: countBy(tracks.map((track) => track.moodSource ?? "Non renseignée")),
+    descriptionSource: countBy(tracks.map((track) => track.descriptionSource ?? "Non renseignée")),
   };
   return { total: tracks.length, artists, genres, moods, moodBlocks, contextBlocks, energy, averageWords, provenance };
 }
@@ -52,13 +52,13 @@ export function computeQualityChecks(tracks: CatalogTrack[]): QualityCheck[] {
   const withLanguage = tracks.filter((track) => track.language).length;
 
   return [
-    { label: "Catalogue size", detail: `${tracks.length} entries (minimum ${TARGET_ENTRIES})`, ok: tracks.length >= TARGET_ENTRIES },
-    { label: "Rich descriptions", detail: short.length ? `${short.length} under ${MIN_DESCRIPTION_WORDS} words` : `All have ${MIN_DESCRIPTION_WORDS}+ words`, ok: short.length === 0 },
-    { label: "Required fields", detail: incomplete.length ? `${incomplete.length} incomplete entries` : "Title, artist, genre, mood, description", ok: incomplete.length === 0 },
-    { label: "Energy values", detail: invalidEnergy.length ? `${invalidEnergy.length} outside 1–5` : "All between 1 and 5", ok: invalidEnergy.length === 0 },
-    { label: "Duplicates", detail: duplicates ? `${duplicates} repeated ID or title + artist` : "No repeated ID or title + artist", ok: duplicates === 0 },
-    { label: "Documented source", detail: withoutSource.length ? `${withoutSource.length} without a source` : "Every entry has a source", ok: withoutSource.length === 0 },
-    { label: "Audio features", detail: `${withAudio} / ${tracks.length} with Spotify features`, ok: withAudio === tracks.length },
-    { label: "Language", detail: `${withLanguage} / ${tracks.length} with a known language`, ok: withLanguage === tracks.length },
+    { label: "Taille du catalogue", detail: `${tracks.length} entrées (minimum ${TARGET_ENTRIES})`, ok: tracks.length >= TARGET_ENTRIES },
+    { label: "Descriptions détaillées", detail: short.length ? `${short.length} de moins de ${MIN_DESCRIPTION_WORDS} mots` : `Au moins ${MIN_DESCRIPTION_WORDS} mots par description`, ok: short.length === 0 },
+    { label: "Champs obligatoires", detail: incomplete.length ? `${incomplete.length} entrées incomplètes` : "Titre, artiste, genre, humeur, description", ok: incomplete.length === 0 },
+    { label: "Niveaux d’énergie", detail: invalidEnergy.length ? `${invalidEnergy.length} hors de l’intervalle 1–5` : "Toutes les valeurs sont entre 1 et 5", ok: invalidEnergy.length === 0 },
+    { label: "Doublons", detail: duplicates ? `${duplicates} doublons d’identifiant ou de couple titre–artiste` : "Aucun identifiant ni couple titre–artiste en double", ok: duplicates === 0 },
+    { label: "Source documentée", detail: withoutSource.length ? `${withoutSource.length} sans source` : "Chaque entrée indique sa source", ok: withoutSource.length === 0 },
+    { label: "Caractéristiques audio", detail: `${withAudio} / ${tracks.length} avec des données audio Spotify`, ok: withAudio === tracks.length },
+    { label: "Langue", detail: `${withLanguage} / ${tracks.length} avec une langue renseignée`, ok: withLanguage === tracks.length },
   ];
 }

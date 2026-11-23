@@ -28,6 +28,7 @@ from .embeddings import cosine_matrix
 from .preprocessing import clean_text, normalize_key, split_sentences
 from .profile import UserProfile
 from .reference import ReferenceIndex
+from .semantic import SemanticMatcher
 from .scoring import Query, block_affinity
 
 DESIRE_RE = re.compile(
@@ -79,6 +80,21 @@ class Intent:
     needs_clarification: bool = False
 
 
+class ChatIntentIndex:
+    """Prototypes d'intention calculés avec l'encodeur déjà chargé par l'API."""
+
+    def __init__(self, matcher: SemanticMatcher):
+        self.encoder = matcher.encoder
+        self.blocks = matcher.blocks
+        self.E_mood_blocks = matcher.mood_blocks
+        self.E_ctx_blocks = matcher.ctx_blocks
+        self.mood_block_names = list(self.E_mood_blocks)
+        self.ctx_block_names = list(self.E_ctx_blocks)
+        self.emotion_names = [name for name in self.blocks["emotions"] if not name.startswith("_")]
+        self.E_emotions = {name: self.encoder.encode(self.blocks["emotions"][name])
+                           for name in self.emotion_names}
+
+
 def detect_exclusions(text: str) -> list[str]:
     found = []
     for m in NEGATION_RE.finditer(text):
@@ -90,7 +106,7 @@ def detect_exclusions(text: str) -> list[str]:
     return found
 
 
-def parse_message(ref: ReferenceIndex, message: str, profile: UserProfile | None = None) -> Intent:
+def parse_message(ref: ReferenceIndex | ChatIntentIndex, message: str, profile: UserProfile | None = None) -> Intent:
     enc = ref.encoder
     msg = clean_text(message)
     it = Intent(message=msg)

@@ -12,6 +12,6 @@ export async function GET() {
     const content = await readFile(DATASET_PATH, "utf-8");
     return new Response(content, { headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" } });
   } catch {
-    return Response.json({ error: "Dataset file not found. Expected data/moodify_dataset.json at the repository root (or set MOODIFY_DATASET_PATH)." }, { status: 404 });
+    return Response.json({ error: "Catalogue introuvable. Vérifiez data/moodify_dataset.json ou configurez MOODIFY_DATASET_PATH." }, { status: 404 });
   }
 }

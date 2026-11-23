@@ -2,13 +2,9 @@
 
 The music library page (`/dataset`) displays the team's reference dataset (`moodify_dataset.json` / `moodify_dataset.csv`, 684 tracks, 29 columns).
 
-## Today (Demo Mode)
+## Routes
 
-The dataset is **not copied** into the frontend. The Next.js route `app/api/tracks/route.ts` reads `data/moodify_dataset.json` at the repository root and returns it unchanged, so the page always shows the data team's latest version. Run the frontend from the `frontend/` folder (`npm run dev`); set `MOODIFY_DATASET_PATH` if the file moves.
-
-This route only works when the frontend runs from a full clone of the repository. Once FastAPI serves `GET /tracks`, set `NEXT_PUBLIC_USE_MOCKS=false` and the route is no longer used.
-
-## Proposed route
+The library calls FastAPI’s `GET /tracks`. In Demo Mode or when that request fails, Next.js reads the same catalogue from the repository using `GET /api/tracks`. Run the frontend from `frontend/` or set `MOODIFY_DATASET_PATH` if the export moves.
 
 `GET /tracks`, no parameters. The backend can return the rows **exactly as exported**, either as a bare array or wrapped:
 
@@ -28,7 +24,7 @@ The frontend converts each row in `lib/catalog-normalizer.ts`. If the backend ch
 | `mood`, `mood_blocks` | Mood tags; mood-block filter and chart |
 | `context`, `context_blocks` | Context tags; context-block filter and chart |
 | `energy` (1–5) | Energy meter, chart, sorting |
-| `language` | Details (`inconnu` is shown as Unknown) |
+| `language` | Details (`inconnu` is shown as « Inconnue ») |
 | `description`, `keywords` | Text analysed by NLP, search |
 | `source`, `mood_source`, `description_source` | Provenance panel and details |
 | `popularity`, `danceability`, `energy_raw`, `valence`, `acousticness`, `instrumentalness`, `tempo` | Audio profile (optional, may be `null`) |

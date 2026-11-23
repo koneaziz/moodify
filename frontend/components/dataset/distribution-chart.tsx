@@ -3,7 +3,7 @@
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { CountItem } from "@/lib/dataset-stats";
 
-export function DistributionChart({ data, label, gradientId, layout = "horizontal", unit = "tracks", labelWidth = 170 }: { data: CountItem[]; label: string; gradientId: string; layout?: "horizontal" | "vertical"; unit?: string; labelWidth?: number }) {
+export function DistributionChart({ data, label, gradientId, layout = "horizontal", unit = "morceaux", labelWidth = 170 }: { data: CountItem[]; label: string; gradientId: string; layout?: "horizontal" | "vertical"; unit?: string; labelWidth?: number }) {
   const vertical = layout === "vertical";
   const height = vertical ? Math.max(220, data.length * 34) : 235;
   return (
