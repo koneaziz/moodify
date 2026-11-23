@@ -1,0 +1,94 @@
+{
+  "_doc": "Blocs sémantiques de référence (équivalent des 'blocs de compétences' du sujet). Chaque bloc est décrit par des phrases prototypes courtes : on compare les réponses libres de l'utilisateur à ces phrases via des embeddings (similarité cosinus).",
+  "mood_blocks": {
+    "Calme & détente": [
+      "musique douce et apaisante pour se détendre",
+      "ambiance calme qui fait baisser le stress",
+      "sons relaxants pour se poser tranquillement"
+    ],
+    "Concentration": [
+      "musique instrumentale pour se concentrer et travailler",
+      "fond sonore discret pour réviser ou étudier",
+      "ambiance lo-fi pour rester focus longtemps"
+    ],
+    "Énergie & motivation": [
+      "musique motivante qui donne de l'énergie",
+      "morceaux puissants pour se dépasser et ne rien lâcher",
+      "rythme rapide qui booste le moral et la confiance"
+    ],
+    "Fête & danse": [
+      "musique festive pour danser en soirée",
+      "sons entraînants qui donnent envie de bouger",
+      "ambiance de fête entre amis"
+    ],
+    "Mélancolie & introspection": [
+      "musique triste et mélancolique",
+      "chansons pour réfléchir seul et ressentir ses émotions",
+      "ambiance pluvieuse et nostalgique"
+    ],
+    "Colère & défoulement": [
+      "musique rageuse pour évacuer la colère",
+      "sons lourds et intenses pour se défouler",
+      "cris et guitares saturées pour libérer la frustration"
+    ],
+    "Romance & sensualité": [
+      "chansons d'amour tendres et romantiques",
+      "musique sensuelle pour un moment à deux",
+      "ambiance douce et intime"
+    ],
+    "Joie & bonne humeur": [
+      "musique joyeuse et optimiste",
+      "sons ensoleillés qui mettent de bonne humeur",
+      "chansons légères et positives"
+    ],
+    "Rêverie & évasion": [
+      "musique planante qui fait voyager",
+      "ambiance rêveuse et éthérée",
+      "sons atmosphériques pour s'évader"
+    ]
+  },
+  "context_blocks": {
+    "Étude & travail": ["réviser", "étudier", "travailler", "se concentrer sur un projet"],
+    "Sport": ["faire du sport", "courir", "s'entraîner à la salle"],
+    "Soirée & fête": ["faire la fête", "soirée entre amis", "danser"],
+    "Trajet": ["dans les transports", "conduire", "marcher en ville"],
+    "Sommeil & méditation": ["s'endormir", "méditer", "se reposer"],
+    "Moment à deux": ["dîner romantique", "moment intime à deux"],
+    "Solitude & pluie": ["seul chez soi un jour de pluie", "moment de solitude"],
+    "Matin & quotidien": ["se réveiller le matin", "faire le ménage", "cuisiner"]
+  },
+  "emotions": {
+    "_doc": "Prototypes d'états émotionnels pour le chatbot (détection de l'humeur actuelle, zero-shot par similarité).",
+    "colère": ["je suis énervé", "je suis en colère", "ça m'agace", "je suis à bout, irrité"],
+    "tristesse": ["je suis triste", "j'ai le cafard", "je me sens seul et déprimé", "j'ai le cœur brisé"],
+    "stress": ["je suis stressé", "je suis anxieux", "j'ai la pression", "je suis tendu avant un examen"],
+    "fatigue": ["je suis fatigué", "je suis épuisé", "je n'ai plus d'énergie", "je suis crevé"],
+    "joie": ["je suis heureux", "je suis de bonne humeur", "je suis content", "tout va bien"],
+    "ennui": ["je m'ennuie", "rien ne me motive", "je tourne en rond"],
+    "amour": ["je suis amoureux", "je pense à quelqu'un", "j'ai un rendez-vous"],
+    "nostalgie": ["je suis nostalgique", "je pense au passé", "les souvenirs reviennent"]
+  },
+  "regulation": {
+    "_doc": "Stratégie 'réguler' : bloc d'humeur cible quand l'utilisateur veut changer d'état (principe de régulation émotionnelle). Stratégie 'accompagner' : bloc qui correspond à l'émotion (principe d'iso-musique).",
+    "réguler": {
+      "colère": "Calme & détente",
+      "tristesse": "Joie & bonne humeur",
+      "stress": "Calme & détente",
+      "fatigue": "Énergie & motivation",
+      "ennui": "Fête & danse",
+      "joie": "Joie & bonne humeur",
+      "amour": "Romance & sensualité",
+      "nostalgie": "Rêverie & évasion"
+    },
+    "accompagner": {
+      "colère": "Colère & défoulement",
+      "tristesse": "Mélancolie & introspection",
+      "stress": "Concentration",
+      "fatigue": "Calme & détente",
+      "ennui": "Rêverie & évasion",
+      "joie": "Fête & danse",
+      "amour": "Romance & sensualité",
+      "nostalgie": "Mélancolie & introspection"
+    }
+  }
+}

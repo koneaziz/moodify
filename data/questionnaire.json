@@ -1,0 +1,88 @@
+{
+  "_doc": "Définition du questionnaire d'onboarding. 'feeds' indique quel champ du profil utilisateur la réponse alimente. Les types couvrent toutes les exigences du sujet : open (texte libre), likert, guided (oui/non + précision), single, multi (cases à cocher).",
+  "sections": [
+    {
+      "id": "S1",
+      "title": "Ton univers musical",
+      "questions": [
+        {"id": "Q01", "type": "open", "feeds": "free_text", "required": true,
+         "label": "Décris en quelques phrases la musique que tu aimes écouter et ce qu'elle t'apporte.",
+         "placeholder": "Ex : J'adore les sons planants avec du piano, ça m'aide à décompresser après les cours..."},
+        {"id": "Q02", "type": "multi", "feeds": "genres_liked",
+         "label": "Quels genres écoutes-tu souvent ?",
+         "options": ["Lo-fi / Chillhop", "Jazz", "Classique", "Ambient", "Électro / House", "Pop", "Rock", "Metal", "Rap FR", "Hip-hop US", "R&B / Soul", "Chanson française", "Indie / Folk", "Afro / Reggae / Latino"]},
+        {"id": "Q03", "type": "multi", "feeds": "genres_disliked",
+         "label": "Y a-t-il des genres que tu ne veux jamais qu'on te propose ?",
+         "options": ["Lo-fi / Chillhop", "Jazz", "Classique", "Ambient", "Électro / House", "Pop", "Rock", "Metal", "Rap FR", "Hip-hop US", "R&B / Soul", "Chanson française", "Indie / Folk", "Afro / Reggae / Latino"]},
+        {"id": "Q04", "type": "open", "feeds": "artists",
+         "label": "Cite tes artistes préférés (séparés par des virgules).",
+         "placeholder": "Ex : Nujabes, Angèle, Daft Punk"},
+        {"id": "Q05", "type": "open", "feeds": "free_text",
+         "label": "Raconte un morceau qui t'a marqué et pourquoi.",
+         "placeholder": "Ex : Clair de lune, parce que ça me rappelle les soirées chez ma grand-mère..."}
+      ]
+    },
+    {
+      "id": "S2",
+      "title": "Tes moments d'écoute",
+      "questions": [
+        {"id": "Q06", "type": "multi", "feeds": "contexts",
+         "label": "Quand écoutes-tu le plus de musique ?",
+         "options": ["Étude & travail", "Sport", "Soirée & fête", "Trajet", "Sommeil & méditation", "Moment à deux", "Solitude & pluie", "Matin & quotidien"]},
+        {"id": "Q07", "type": "guided", "feeds": "study_music",
+         "label": "Écoutes-tu de la musique pour étudier ou travailler ?",
+         "followup": {"if": "oui", "type": "open", "feeds": "free_text",
+                      "label": "Quel type d'ambiance t'aide à te concentrer ?"}},
+        {"id": "Q08", "type": "likert", "feeds": "energy_pref", "scale": [1, 5],
+         "label": "En général, tu préfères une musique plutôt calme (1) ou très énergique (5) ?"},
+        {"id": "Q09", "type": "likert", "feeds": "lyrics_pref", "scale": [1, 5],
+         "label": "Les paroles comptent-elles pour toi ? (1 = je préfère l'instrumental, 5 = les paroles sont essentielles)"},
+        {"id": "Q10", "type": "likert", "feeds": "discovery_pref", "scale": [1, 5],
+         "label": "Aimes-tu découvrir des artistes inconnus ? (1 = pas du tout, 5 = j'adore)"}
+      ]
+    },
+    {
+      "id": "S3",
+      "title": "Musique et émotions",
+      "questions": [
+        {"id": "Q11", "type": "single", "feeds": "regulation_strategy",
+         "label": "Quand tu es triste ou énervé(e), tu préfères...",
+         "options": {"réguler": "une musique qui change mon humeur (me calme ou me remonte le moral)",
+                      "accompagner": "une musique qui colle à mon humeur (triste si je suis triste, intense si je suis énervé·e)"}},
+        {"id": "Q12", "type": "open", "feeds": "mood_text",
+         "label": "Décris l'ambiance musicale idéale d'un dimanche parfait pour toi.",
+         "placeholder": "Ex : Quelque chose de doux et ensoleillé, un peu soul, avec un café..."},
+        {"id": "Q13", "type": "open", "feeds": "mood_text",
+         "label": "Et quand tu as besoin de te défouler ou de te motiver, tu écoutes quoi ?"}
+      ]
+    },
+    {
+      "id": "S4",
+      "title": "Ta personnalité (TIPI – 10 items)",
+      "_doc": "Ten-Item Personality Inventory (Gosling, Rentfrow & Swann, 2003). Échelle 1 (pas du tout d'accord) à 7 (tout à fait d'accord). 'Je me vois comme quelqu'un de...'. reverse = item inversé.",
+      "questions": [
+        {"id": "P01", "type": "likert", "feeds": "personality", "scale": [1, 7], "trait": "extraversion", "reverse": false, "label": "...extraverti(e), enthousiaste"},
+        {"id": "P02", "type": "likert", "feeds": "personality", "scale": [1, 7], "trait": "agreeableness", "reverse": true, "label": "...critique, qui aime débattre"},
+        {"id": "P03", "type": "likert", "feeds": "personality", "scale": [1, 7], "trait": "conscientiousness", "reverse": false, "label": "...fiable, autodiscipliné(e)"},
+        {"id": "P04", "type": "likert", "feeds": "personality", "scale": [1, 7], "trait": "emotional_stability", "reverse": true, "label": "...anxieux(se), facilement contrarié(e)"},
+        {"id": "P05", "type": "likert", "feeds": "personality", "scale": [1, 7], "trait": "openness", "reverse": false, "label": "...ouvert(e) aux nouvelles expériences, curieux(se)"},
+        {"id": "P06", "type": "likert", "feeds": "personality", "scale": [1, 7], "trait": "extraversion", "reverse": true, "label": "...réservé(e), discret(e)"},
+        {"id": "P07", "type": "likert", "feeds": "personality", "scale": [1, 7], "trait": "agreeableness", "reverse": false, "label": "...bienveillant(e), chaleureux(se)"},
+        {"id": "P08", "type": "likert", "feeds": "personality", "scale": [1, 7], "trait": "conscientiousness", "reverse": true, "label": "...désorganisé(e), un peu négligent(e)"},
+        {"id": "P09", "type": "likert", "feeds": "personality", "scale": [1, 7], "trait": "emotional_stability", "reverse": false, "label": "...calme, émotionnellement stable"},
+        {"id": "P10", "type": "likert", "feeds": "personality", "scale": [1, 7], "trait": "openness", "reverse": true, "label": "...conventionnel(le), peu créatif(ve)"}
+      ]
+    },
+    {
+      "id": "S5",
+      "title": "Concerts",
+      "questions": [
+        {"id": "Q14", "type": "single", "feeds": "city", "label": "Dans quelle ville es-tu ?",
+         "options": ["Paris", "Lyon", "Marseille", "Toulouse", "Bordeaux", "Lille", "Nantes", "Strasbourg", "Montpellier", "Nice", "Rennes", "Bruxelles", "Genève"]},
+        {"id": "Q15", "type": "likert", "feeds": "travel_radius_km", "scale": [1, 5],
+         "label": "Jusqu'où es-tu prêt(e) à aller pour un concert ? (1 = ma ville, 5 = je traverse le pays)",
+         "mapping_km": {"1": 30, "2": 150, "3": 350, "4": 600, "5": 1000}}
+      ]
+    }
+  ]
+}

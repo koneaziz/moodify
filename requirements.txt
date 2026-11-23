@@ -1,0 +1,19 @@
+# Moteur NLP
+sentence-transformers>=3.0
+scikit-learn>=1.4
+gensim>=4.3
+numpy>=1.26
+pandas>=2.0
+
+# Construction du dataset
+rapidfuzz>=3.0
+pyarrow>=14.0
+matplotlib>=3.8
+
+# Application
+streamlit>=1.38
+plotly>=5.20
+umap-learn>=0.5
+
+# Tests
+pytest>=8.0
