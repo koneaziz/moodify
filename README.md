@@ -352,6 +352,8 @@ On calcule de la même façon `S_mood(t)` (vue humeur) et `S_ctx(t)` (vue contex
 
 ### 10.2 Score composite d'un morceau
 
+> **Mise à jour (parties 4 et 5)** : la formule utilisée par l'API est celle de `backend/recommendation/scoring.py`, détaillée et justifiée dans `notebooks/03_recommandation_api.ipynb` (6 critères : description 0,30, humeur 0,25, contexte 0,15, genre 0,15, énergie 0,10, artiste 0,05, soit 70 % sémantique). Le tableau ci-dessous est la conception de départ.
+
 ```
 Score(t) = Σ_k w_k · C_k(t) / Σ_k w_k        (sur les composantes k disponibles)
 ```
