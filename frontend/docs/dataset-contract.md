@@ -33,6 +33,7 @@ The frontend converts each row in `lib/catalog-normalizer.ts`. If the backend ch
 | `source`, `mood_source`, `description_source` | Provenance panel and details |
 | `popularity`, `danceability`, `energy_raw`, `valence`, `acousticness`, `instrumentalness`, `tempo` | Audio profile (optional, may be `null`) |
 | `muse_valence`, `muse_arousal`, `russell_quadrant` | Emotion map (optional, may be `null`) |
+| `cover_url` | Album artwork on cards and details (optional, produced by `dataset_builder/covers.py`; empty → genre icon) |
 
 Multi-valued columns use `|`. Numeric audio columns may be `null` for hand-written ("gold") entries.
 

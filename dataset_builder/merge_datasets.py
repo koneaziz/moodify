@@ -13,6 +13,7 @@ Sorties  : data/processed/moodify_dataset.csv et .json
  M5 Contextes : tags humains + règles sur les caractéristiques audio
  M6 Descriptions françaises à variantes (+ genres fins, ressenti des auditeurs)
  M7 Fusion avec le jeu gold (doublons fusionnés : on garde la description écrite à la main)
+ M8 Pochettes : cover_url via Spotify oEmbed, avec cache (covers.py ; FETCH_COVERS=0 pour rester hors ligne)
 """
 from __future__ import annotations
 
@@ -26,6 +27,7 @@ import numpy as np
 import pandas as pd
 
 from . import config
+from .covers import cover_urls
 from .lexicon import (CONTEXT_TO_BLOCK, GENRE_HINTS, MOOD_TO_BLOCK, NOISE_TAGS, OLD_TO_NEW_GENRE,
                       TAG_LEXICON, TAG_SYNONYMS)
 from .p03_clean_spotify import pick_macro
@@ -256,12 +258,13 @@ def run() -> None:
     df["context"] = df["context_list"].map(J)
     df["tags_mood_human"] = df["tags_mood"].map(lambda l: J(l) if isinstance(l, list) else "")
     assert set(df["genre"]) <= GENRE_LABELS, set(df["genre"]) - GENRE_LABELS
+    df["cover_url"] = cover_urls(df["track_id"])                               # M8
 
     cols = ["track_id", "title", "artist", "featured_artists", "album", "genre", "sub_genres", "mood",
             "context", "energy", "language", "description", "keywords", "mood_blocks", "context_blocks",
             "tags_mood_human", "mood_source", "description_source", "source", "popularity",
             "danceability", "energy_raw", "valence", "acousticness", "instrumentalness", "tempo",
-            "muse_valence", "muse_arousal", "russell_quadrant"]
+            "muse_valence", "muse_arousal", "russell_quadrant", "cover_url"]
     df = df[cols]
     df.to_csv(OUT.with_suffix(".csv"), index=False)
     df.to_json(OUT.with_suffix(".json"), orient="records", force_ascii=False, indent=1)

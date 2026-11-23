@@ -112,6 +112,13 @@ CONCERT_YEAR = 2027
 CONCERTS_SEED = 2027
 
 # =============================================================================
+# POCHETTES (dataset_builder/covers.py, appelé par merge_datasets.py)
+# =============================================================================
+COVERS_CACHE = DATA / "spotify_covers_cache.json"   # versionné, comme lastfm_tags_cache.json
+FETCH_COVERS = os.getenv("FETCH_COVERS", "1") == "1"  # 0 = n'utiliser que le cache (hors ligne)
+COVERS_SLEEP_S = 0.1                                  # pause entre deux appels oEmbed Spotify
+
+# =============================================================================
 # ENCODEUR (embeddings) utilisé par les phases 8, 12, 17, 18
 # =============================================================================
 ENCODER = os.getenv("ENCODER", "sbert")   # "sbert" | "tfidf" (repli hors ligne)
